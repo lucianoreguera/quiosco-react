@@ -3,7 +3,7 @@ import ResumenProducto from './ResumenProducto'
 
 const Resumen = () => {
   const { pedido } = useQuiosco()
-  console.log(pedido)
+  
   return (
     <aside className="md:w-72 h-screen overflow-y-scroll p-5">
       <h1 className="text-4xl font-black">Mi Pedido</h1>
