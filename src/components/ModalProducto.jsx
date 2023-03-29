@@ -4,7 +4,7 @@ import useQuiosco from '../hooks/useQuiosco'
 
 const ModalProducto = () => {
   const [cantidad, setCantidad] = useState(1)
-  const { producto, handleClickModal } = useQuiosco()
+  const { producto, handleClickModal, handleAgregarProducto } = useQuiosco()
   
   return (
     <div className='md:flex gap-10'>
@@ -58,6 +58,10 @@ const ModalProducto = () => {
         <button
           type="button"
           className="bg-indigo-600 hover:bg-indigo-800 px-5 py-2 mt-5 text-white font-bold uppercase rounded"
+          onClick={() => {
+            handleAgregarProducto({ ...producto, cantidad })
+            handleClickModal()
+          }}
         >Añadir al Pedido</button>
       </div>
     </div>
