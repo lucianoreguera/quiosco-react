@@ -1,14 +1,48 @@
-import { Link } from "react-router-dom"
+import { createRef, useState } from 'react'
+import { Link } from 'react-router-dom'
+import Alerta from '../components/Alerta'
+import clienteAxios from '../config/axios'
 
 
 const Registro = () => {
+  const nameRef = createRef()
+  const emailRef = createRef()
+  const passwordRef = createRef()
+  const passwordConfirmationRef = createRef()
+
+  const [errors, setErrors] = useState([])
+
+  const handleSubmit = async e => {
+    e.preventDefault()
+
+    const datos = {
+      name: nameRef.current.value,
+      email: emailRef.current.value,
+      password: passwordRef.current.value,
+      password_confirmation: passwordConfirmationRef.current.value
+    }
+
+    try {
+      const response = await clienteAxios.post('/api/registro', datos)
+      console.log(response)
+    } catch (error) {
+      setErrors(Object.values(error.response.data.errors))
+    }
+  }
+  
   return (
     <>
       <h1 className="text-4xl font-black">Crea tu Cuenta</h1>
       <p>Crea tu cuenta llenando el formulario</p>
 
       <div className="bg-white shadow-md rounded-md mt-10 px-5 py-10">
-        <form>
+        <form 
+          onSubmit={handleSubmit}
+          noValidate
+        >
+          {
+            errors ? errors.map(error => <Alerta key={error}>{error}</Alerta>) : null
+          }
           <div className="mb-4">
             <label
               htmlFor="name"
@@ -20,6 +54,7 @@ const Registro = () => {
               id="name"
               className="mt-2 w-full p-3 bg-gray-50"
               placeholder="Tu Nombre"
+              ref={nameRef}
             />
           </div>
 
@@ -34,6 +69,7 @@ const Registro = () => {
               id="email"
               className="mt-2 w-full p-3 bg-gray-50"
               placeholder="Tu Email"
+              ref={emailRef}
             />
           </div>
 
@@ -48,6 +84,7 @@ const Registro = () => {
               id="password"
               className="mt-2 w-full p-3 bg-gray-50"
               placeholder="Tu Password"
+              ref={passwordRef}
             />
           </div>
 
@@ -62,6 +99,7 @@ const Registro = () => {
               id="password_confirmation"
               className="mt-2 w-full p-3 bg-gray-50"
               placeholder="Repetir Password"
+              ref={passwordConfirmationRef}
             />
           </div>
 
