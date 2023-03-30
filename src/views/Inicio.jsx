@@ -2,6 +2,7 @@ import useSWR from 'swr'
 import clienteAxios from '../config/axios'
 import useQuiosco from '../hooks/useQuiosco'
 import Producto from '../components/Producto'
+import Spinner from '../components/Spinner'
 
 const Inicio = () => {
   const { categoriaActual } = useQuiosco()
@@ -11,7 +12,7 @@ const Inicio = () => {
     refreshInterval: 1000
   })
 
-  if (isLoading) return 'Cargando...'
+  if (isLoading) return <Spinner />
   
   const productos = data.data.filter(producto => producto.categoria_id === categoriaActual.id)
 
