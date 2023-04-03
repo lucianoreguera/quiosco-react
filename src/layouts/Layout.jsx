@@ -2,6 +2,7 @@ import { Outlet } from 'react-router-dom'
 import Modal from 'react-modal'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
+import { useAuth } from '../hooks/useAuth';
 import useQuiosco from '../hooks/useQuiosco'
 import Sidebar from '../components/Sidebar'
 import Resumen from '../components/Resumen'
@@ -22,6 +23,7 @@ Modal.setAppElement('#root')
 
 const Layout = () => {
   const { modal } = useQuiosco()
+  const { user, error } = useAuth({ middleware: 'auth' })
   
   return (
     <>
