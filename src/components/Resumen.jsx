@@ -1,11 +1,20 @@
 import { formatearMoneda } from '../helpers'
 import useQuiosco from '../hooks/useQuiosco'
+import { useAuth } from '../hooks/useAuth' // Si queremos cerrar sesión despues de cada pedido
 import ResumenProducto from './ResumenProducto'
 
 const Resumen = () => {
-  const { pedido, total } = useQuiosco()
+  const { pedido, total, handleSubmitPedidos } = useQuiosco()
+  // Si queremos cerrar sesión después de cada pedido
+  const { logout } = useAuth({})
 
   const comprobarPedido = () => pedido.length === 0
+
+  const handleSubmit = e => {
+    e.preventDefault()
+
+    handleSubmitPedidos(logout)
+  }
   
   return (
     <aside className="md:w-72 h-screen overflow-y-scroll p-5">
@@ -32,7 +41,10 @@ const Resumen = () => {
         { formatearMoneda(total) }
       </p>
 
-      <form className="w-full">
+      <form 
+        className="w-full"
+        onSubmit={handleSubmit}
+      >
         <div className="mt-5">
           <input 
             type="submit" 

@@ -32,6 +32,42 @@ const QuioscoProvider = ({ children }) => {
       console.log(error)
     }
   }
+
+  const handleSubmitPedidos = async logout => {
+    const token = localStorage.getItem('AUTH_TOKEN')
+
+    try {
+      const { data } = await clienteAxios.post('/api/pedidos', {
+        // Se envía al request del controlador de laravel
+        total,
+        productos: pedido.map(producto => (
+          {
+            id: producto.id,
+            cantidad: producto.cantidad
+          }
+        ))
+      }, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+
+      toast.success(data.message)
+
+      setTimeout(() => {
+        setPedido([])
+      }, 1000);
+
+      // Si queremos cerrar sesión después de cada pedido
+      setTimeout(() => {
+        localStorage.removeItem('AUTH_TOKEN') // Si queremos cerrar sesión despues de cada pedido
+        logout() // Si queremos cerrar sesión despues de cada pedido
+      }, 3000)
+
+    } catch (error) {
+      console.log(error)
+    }
+  }
   
   const handleClickCategoria = id => {
     const categoria = categorias.filter(categoria => categoria.id === id)[0]
@@ -80,7 +116,8 @@ const QuioscoProvider = ({ children }) => {
         handleAgregarProducto,
         handleEditarCantidad,
         handleEliminarProductoPedido,
-        total
+        total,
+        handleSubmitPedidos
       }}
     >{ children }</QuioscoContext.Provider>   
   )
